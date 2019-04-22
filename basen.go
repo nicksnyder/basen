@@ -14,7 +14,7 @@ import (
 // it is safe to include in a URL with escaping.
 var Base58Encoding = NewEncoding("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
 
-// Base62 is the standard base62 encoding, which is the standard base64 encoding defined in RFC 4648
+// Base62Encoding is the standard base62 encoding, which is the standard base64 encoding defined in RFC 4648
 // modified to avoid non-alphanumeric characters.
 // It is useful for generating strings that are safe to include in URLs, and
 // allows easy copy and paste because a double-click will usually select the whole string.
@@ -109,7 +109,7 @@ func (err errInvalidCharacter) Error() string {
 	return fmt.Sprintf("string contains invalid base%d character: %q", err.base, err.char)
 }
 
-// DecodeStringToBigInt returns the int64 represented by the encoded string s.
+// DecodeStringToInt64 returns the int64 represented by the encoded string s.
 func (e *Encoding) DecodeStringToInt64(s string) (int64, error) {
 	var n int64
 	radix := e.radix.Int64()
