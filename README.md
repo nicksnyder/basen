@@ -1,6 +1,6 @@
 # basen
 
-[![Build Status](https://travis-ci.org/nicksnyder/basen.svg?branch=master)](http://travis-ci.org/nicksnyder/basen) [![GoDoc](http://godoc.org/github.com/nicksnyder/basen?status.svg)](http://godoc.org/github.com/nicksnyder/basen) [![Report card](https://goreportcard.com/badge/github.com/nicksnyder/basen)](https://goreportcard.com/report/github.com/nicksnyder/basen) [![Sourcegraph](https://sourcegraph.com/github.com/nicksnyder/basen/-/badge.svg)](https://sourcegraph.com/github.com/nicksnyder/basen?badge)
+[![GoDoc](http://godoc.org/github.com/nicksnyder/basen?status.svg)](http://godoc.org/github.com/nicksnyder/basen) [![Build Status](https://travis-ci.org/nicksnyder/basen.svg?branch=master)](http://travis-ci.org/nicksnyder/basen) [![Report card](https://goreportcard.com/badge/github.com/nicksnyder/basen)](https://goreportcard.com/report/github.com/nicksnyder/basen)
 
 Package basen implements a radix encoding/decoding scheme, defined by a n-character alphabet.
 
