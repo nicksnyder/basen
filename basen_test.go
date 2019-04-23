@@ -119,6 +119,15 @@ func TestBase58EncodeDecode(t *testing.T) {
 	}
 }
 
+func TestErrInvalidCharacter_String(t *testing.T) {
+	err := errInvalidCharacter{base: 13, char: 'z'}
+	expected := "string contains invalid base13 character: 'z'"
+
+	if actual := err.Error(); actual != expected {
+		t.Fatalf("expected error %q; got %q", expected, actual)
+	}
+}
+
 var benchmarkEncodeResult string
 
 func BenchmarkBase62EncodeToString(b *testing.B) {
