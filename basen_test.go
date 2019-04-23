@@ -69,7 +69,7 @@ func TestDecode(t *testing.T) {
 				t.Fatalf("got error %#v; want %#v", err, test.decodeErr)
 			}
 			if string(actual) != test.decoded {
-				t.Fatalf("got %q; want %q", actual, test.encoded)
+				t.Fatalf("got %q; want %q", actual, test.decoded)
 			}
 		})
 	}
@@ -125,6 +125,92 @@ func TestErrInvalidCharacter_String(t *testing.T) {
 
 	if actual := err.Error(); actual != expected {
 		t.Fatalf("expected error %q; got %q", expected, actual)
+	}
+}
+
+func TestEncodeDecodeInt64(t *testing.T) {
+	tests := []struct {
+		encoding  *Encoding
+		decoded   int64
+		encoded   string
+		decodeErr error
+	}{
+		{
+			encoding: Base62Encoding,
+			decoded:  32,
+			encoded:  "W",
+		},
+		{
+			encoding: Base58Encoding,
+			decoded:  32,
+			encoded:  "Z",
+		},
+		{
+			encoding:  Base62Encoding,
+			encoded:   "-",
+			decodeErr: errInvalidCharacter{base: 62, char: '-'},
+		},
+		{
+			encoding:  Base58Encoding,
+			encoded:   "-",
+			decodeErr: errInvalidCharacter{base: 58, char: '-'},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.encoded, func(t *testing.T) {
+			if test.decodeErr == nil {
+				t.Run("encode", func(t *testing.T) {
+					actual := test.encoding.EncodeInt64ToString(test.decoded)
+					if actual != test.encoded {
+						t.Fatalf("got %q; want %q", actual, test.encoded)
+					}
+				})
+
+			}
+
+			t.Run("decode", func(t *testing.T) {
+				actual, err := test.encoding.DecodeStringToInt64(test.encoded)
+				if err != test.decodeErr {
+					t.Fatalf("got error %#v; want %#v", err, test.decodeErr)
+				}
+				if actual != test.decoded {
+					t.Fatalf("got %d; want %d", actual, test.decoded)
+				}
+			})
+		})
+	}
+}
+
+func TestBase62EncodeDecodeInt64(t *testing.T) {
+	for i := uint(0); i < 6; i++ {
+		expected := int64(2<<i - 1)
+		t.Run(fmt.Sprintf("%d", expected), func(t *testing.T) {
+			s := Base62Encoding.EncodeInt64ToString(expected)
+			actual, err := Base62Encoding.DecodeStringToInt64(s)
+			if err != nil {
+				t.Fatalf("error decoding %q: %s", s, err)
+			}
+			if actual != expected {
+				t.Fatalf("%q got %x; want %x", s, actual, expected)
+			}
+		})
+	}
+}
+
+func TestBase58EncodeDecodeInt64(t *testing.T) {
+	for i := uint(0); i < 6; i++ {
+		expected := int64(2<<i - 1)
+		t.Run(fmt.Sprintf("%d", expected), func(t *testing.T) {
+			s := Base58Encoding.EncodeInt64ToString(expected)
+			actual, err := Base58Encoding.DecodeStringToInt64(s)
+			if err != nil {
+				t.Fatalf("error decoding %q: %s", s, err)
+			}
+			if actual != expected {
+				t.Fatalf("%q got %x; want %x", s, actual, expected)
+			}
+		})
 	}
 }
 
